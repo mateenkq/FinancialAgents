@@ -19,6 +19,7 @@ globals [log-price
          news-qualitative-meaning
          number-of-traders
          volatility-indicator
+         mean-opinion
 ]
 
 to setup
@@ -92,13 +93,16 @@ to agent-decision
   ask turtles [
     update-look-of-turtle
   ]
+  set mean-opinion sum [opinion] of turtles / N ;;; Set new mean opinion
+  if (mean-opinion < 0.1)
+      [ Maslov_Sneppen_rewiring ]
 end
 
 ;;; Market clearing mechanism
 
 to market-clearing
   set log-price (log-price + returns)
-  set returns sum [my-sentiment] of turtles / N
+  set returns sum [my-sentiment] of turtles / N ;;; Could potentially use opinion instead of sentiment
 end
 
 ;; Update look of turtle after every iteration
@@ -270,7 +274,7 @@ max-news-sensitivity
 max-news-sensitivity
 0
 1
-0.0
+0.21
 0.01
 1
 NIL
@@ -285,7 +289,7 @@ miu
 miu
 -1
 1
-0.0
+0.01
 0.01
 1
 NIL
@@ -300,7 +304,7 @@ sigma
 sigma
 0
 1
-0.0
+0.191
 0.001
 1
 NIL
@@ -315,7 +319,7 @@ max-base-propensity-to-sentiment-contagion
 max-base-propensity-to-sentiment-contagion
 0
 1
-0.0
+0.22
 0.01
 1
 NIL
@@ -456,7 +460,7 @@ N
 N
 10
 200
-10.0
+15.0
 5
 1
 NIL
@@ -471,7 +475,7 @@ R
 R
 0
 1000
-6.0
+38.0
 1
 1
 NIL
